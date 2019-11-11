@@ -84,6 +84,8 @@ class RichTextEditor extends React.Component {
 	render() {
 		const { editorState } = this.state;
 
+		const { readOnly } = this.props;
+
 		let className = "RichEditor-editor";
 		var contentState = editorState.getCurrentContent();
 		if (!contentState.hasText()) {
@@ -99,14 +101,20 @@ class RichTextEditor extends React.Component {
 
 		return (
 			<div className="RichEditor-root">
-				<BlockStyleControls
-					editorState={editorState}
-					onToggle={this.toggleBlockType}
-				/>
-				<InlineStyleControls
-					editorState={editorState}
-					onToggle={this.toggleInlineStyle}
-				/>
+				{
+					!readOnly &&
+					<>
+						<BlockStyleControls
+							editorState={editorState}
+							onToggle={this.toggleBlockType}
+						/>
+						<InlineStyleControls
+							editorState={editorState}
+							onToggle={this.toggleInlineStyle}
+						/>
+					</>
+				}
+
 				<div className={className} onClick={this.focus}>
 					<Editor
 						blockStyleFn={getBlockStyle}
@@ -115,6 +123,7 @@ class RichTextEditor extends React.Component {
 						handleKeyCommand={this.handleKeyCommand}
 						onChange={this._onChange}
 						onTab={this.onTab}
+						readOnly={readOnly}
 						placeholder="Add Question..."
 						ref="editor"
 						spellCheck={true}

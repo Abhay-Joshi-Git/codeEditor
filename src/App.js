@@ -8,7 +8,7 @@ const data1 = `{"blocks":[{"key":"5ahok","text":"this is demo","type":"unstyled"
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { questionData: "" };
+		this.state = { questionData: "", readOnly: false };
 		this.editorRef = React.createRef();
 	}
 
@@ -22,19 +22,29 @@ class App extends React.Component {
 		})
 	};
 
+	toggleEditing = () => {
+		this.setState(state => ({
+			readOnly: !state.readOnly
+		}))
+	}
+
 	render() {
-		const { questionData } = this.state;
+		const { questionData, readOnly } = this.state;
 
 		return (
 			<div className="RichEditor-root">
 				<RichTextEditor
 					defaultValue={questionData}
+					readOnly={readOnly}
 					key={hashCode(questionData)}
 					ref={this.editorRef}
 				/>
 				<div>
 					<button onClick={this.onSubmit}>Submit</button>
 					<button onClick={this.onUpdate}>Update Data</button>
+					<div>
+						<button onClick={this.toggleEditing}>Toggle Editing</button>
+					</div>
 				</div>
 			</div>
 		);
